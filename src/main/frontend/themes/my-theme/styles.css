@@ -16,4 +16,9 @@ vaadin-text-field.bordered::part(input-field) {
   background-color: var(--lumo-base-color);
 }
 
+.rounded-image {
+    border-radius: 50%; /* 50% will create a circle */
+    object-fit: cover; /* Ensures the image maintains its aspect ratio */
+}
+
 
