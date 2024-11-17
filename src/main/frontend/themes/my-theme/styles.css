@@ -21,4 +21,6 @@ vaadin-text-field.bordered::part(input-field) {
     object-fit: cover; /* Ensures the image maintains its aspect ratio */
 }
 
-
+vaadin-button.background-color-transparent {
+  background-color: hsla(0, 0%, 100%, 0.0);;
+}

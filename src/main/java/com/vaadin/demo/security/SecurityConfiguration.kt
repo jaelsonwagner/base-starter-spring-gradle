@@ -2,9 +2,13 @@ package com.vaadin.demo.security
 
 import com.vaadin.demo.oauth.ui.LoginView
 import com.vaadin.flow.spring.security.VaadinWebSecurity
+import com.vaadin.flow.spring.security.WebIconsRequestMatcher
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher
+import org.springframework.security.web.util.matcher.RequestMatcher
+import org.springframework.security.web.util.matcher.RequestMatchers
 
 
 /**
@@ -17,6 +21,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 open class SecurityConfiguration : VaadinWebSecurity() {
 
     override fun configure(http: HttpSecurity) {
+        http.authorizeHttpRequests { urlRegistry ->
+
+                // Vaadin internal requests must always be allowed to allow public
+                // Flow pages and/or login page implemented using Flow.
+                urlRegistry.requestMatchers(AntPathRequestMatcher("/public/**")).permitAll()
+            }
         // Authorize http requests for pages like the ones annotated with @AnonymousAllowed
         // See the implementation for more details.
         super.configure(http)

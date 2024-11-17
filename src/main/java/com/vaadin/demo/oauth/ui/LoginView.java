@@ -2,14 +2,13 @@ package com.vaadin.demo.oauth.ui;
 
 
 import com.vaadin.demo.oauth.data.UserSession;
-import com.vaadin.flow.component.html.Anchor;
-import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
-import com.vaadin.flow.theme.lumo.LumoUtility;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 
@@ -42,10 +41,28 @@ public class LoginView extends VerticalLayout {
             add(new Paragraph("LoggedIn: " + userSession.isLoggedIn()));
             add(new H1("Login to access this app"));
             add(new Paragraph("This is demo app for Spring Security + Google, thus there is only one option to log in:"));
-            Anchor loginLink = new Anchor(OAUTH_URL, "Login with Google");
-            loginLink.addClassName(LumoUtility.FontSize.XLARGE);
-            loginLink.setRouterIgnore(true); // actually navigate away from this app
-            add(loginLink);
+
+            // Create an image element
+            Button loginButton = createGoogleLoginButton();
+            add(loginButton);
         }
+    }
+
+    @NotNull
+    private Button createGoogleLoginButton() {
+        String googleSignInImg = "public/btn_google_signin.png";
+
+        Image googleLogo = new Image(googleSignInImg, "Google Sign in");
+
+        // The button text will be provided by the image
+        Button loginButton = new Button("", googleLogo);
+        // Add a click listener to redirect to the Google OAuth URL
+        loginButton.addClickListener(event -> {
+            // Redirect to the Google OAuth login page
+            getUI().ifPresent(ui -> ui.getPage().setLocation(OAUTH_URL));
+        });
+
+        loginButton.addClassName("background-color-transparent");  // Add custom class for styling
+        return loginButton;
     }
 }
